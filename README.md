@@ -5,7 +5,7 @@ A modern full-stack **Mess Management System** designed to simplify hostel/mess 
 ## 🌐 Live Demo
 
 🚀 **Live Website:**
-https://messmanagementsys.netlify.app/
+https://messmanagementsystemseu.netlify.app/
 
 ## 📌 Project Overview
 
@@ -402,13 +402,13 @@ The main objectives of this project are:
 
 Visit the deployed application:
 
-👉 **https://messmanagementsys.netlify.app/**
+👉 **https://messmanagementsystemseu.netlify.app/**
 
 ---
 
 # 👨‍💻 Author
 
-**Saniul Islam**
+**Teams **
 
 Bachelor of Science in Computer Science and Engineering
 Southeast University, Dhaka
