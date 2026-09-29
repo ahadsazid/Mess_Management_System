@@ -2,6 +2,7 @@ import { useState, useEffect, ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
+
 import {
   LayoutDashboard,
   UtensilsCrossed,
@@ -15,22 +16,28 @@ import {
   Moon,
   ClipboardCheck,
   CreditCard,
+  Sparkles,
 } from 'lucide-react';
 
 type MemberLayoutProps = {
   children: ReactNode;
 };
 
-export default function MemberLayout({ children }: MemberLayoutProps) {
+export default function MemberLayout({
+  children,
+}: MemberLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { profile, signOut } = useAuth();
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] =
+    useState(false);
 
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     return (
-      (localStorage.getItem('memberTheme') as 'dark' | 'light') || 'dark'
+      (localStorage.getItem('memberTheme') as
+        | 'dark'
+        | 'light') || 'dark'
     );
   });
 
@@ -45,16 +52,22 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
   }, [location.pathname]);
 
   const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    setTheme((prev) =>
+      prev === 'dark' ? 'light' : 'dark'
+    );
   };
 
-  // Member Sidebar Menu
+  // ========================================================
+  // MEMBER SIDEBAR MENU
+  // ========================================================
+
   const menuItems = [
     {
       icon: LayoutDashboard,
       label: 'Dashboard',
       path: '/dashboard',
     },
+
     {
       icon: UtensilsCrossed,
       label: 'Meals',
@@ -65,6 +78,16 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
       icon: ClipboardCheck,
       label: 'Meal Preference',
       path: '/meal-preferences',
+    },
+
+    // ======================================================
+    // ⭐ NEW: PERSONALIZED MEAL RECOMMENDATION
+    // ======================================================
+
+    {
+      icon: Sparkles,
+      label: 'Recommended',
+      path: '/meal-recommendations',
     },
 
     {
@@ -78,6 +101,7 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
       label: 'Notices',
       path: '/notices',
     },
+
     {
       icon: User,
       label: 'Profile',
@@ -85,18 +109,26 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
     },
   ];
 
+  // ========================================================
+  // SIGN OUT
+  // ========================================================
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/login');
   };
 
-  // --------------------------------------------------------
-  // REUSABLE CLEAN SIDEBAR CONTENT
-  // --------------------------------------------------------
+  // ========================================================
+  // SIDEBAR CONTENT
+  // ========================================================
+
   const SidebarContent = () => (
     <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden">
 
-      {/* 1. Header / Logo Area */}
+      {/* ==================================================
+          HEADER / LOGO
+      ================================================== */}
+
       <div
         className={`flex items-center justify-between px-6 py-7 border-b ${
           isDark
@@ -105,6 +137,7 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
         }`}
       >
         <div className="flex items-center gap-3.5">
+
           <div
             className={`p-2.5 rounded-xl flex items-center justify-center ${
               isDark
@@ -112,13 +145,19 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
                 : 'bg-indigo-50 text-indigo-600'
             }`}
           >
-            <Users size={22} strokeWidth={2.5} />
+            <Users
+              size={22}
+              strokeWidth={2.5}
+            />
           </div>
 
           <div className="min-w-0">
+
             <h2
               className={`text-base font-bold tracking-tight truncate ${
-                isDark ? 'text-white' : 'text-slate-900'
+                isDark
+                  ? 'text-white'
+                  : 'text-slate-900'
               }`}
             >
               Resident Portal
@@ -133,12 +172,16 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
             >
               Member Access
             </p>
+
           </div>
         </div>
 
         {/* Mobile Close Button */}
+
         <button
-          onClick={() => setIsMobileMenuOpen(false)}
+          onClick={() =>
+            setIsMobileMenuOpen(false)
+          }
           className={`lg:hidden p-2 rounded-xl transition-all duration-200 ${
             isDark
               ? 'bg-white/5 text-slate-400 hover:text-white'
@@ -149,22 +192,32 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
         </button>
       </div>
 
-      {/* 2. Main Navigation Links */}
+
+      {/* ==================================================
+          MAIN NAVIGATION
+      ================================================== */}
+
       <div className="px-4 py-8 space-y-1.5">
+
         <p
           className={`px-3 text-[10px] font-extrabold uppercase tracking-widest mb-4 ${
-            isDark ? 'text-slate-600' : 'text-slate-400'
+            isDark
+              ? 'text-slate-600'
+              : 'text-slate-400'
           }`}
         >
           Main Menu
         </p>
 
         {menuItems.map((item) => {
+
           const Icon = item.icon;
 
           const isActive =
             location.pathname === item.path ||
-            location.pathname.startsWith(`${item.path}/`);
+            location.pathname.startsWith(
+              `${item.path}/`
+            );
 
           return (
             <button
@@ -180,10 +233,14 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
                     : 'text-slate-500 font-medium hover:bg-slate-50 hover:text-slate-900'
               }`}
             >
+
               <div className="flex items-center gap-3.5">
+
                 <Icon
                   size={18}
-                  strokeWidth={isActive ? 2.5 : 2}
+                  strokeWidth={
+                    isActive ? 2.5 : 2
+                  }
                   className={`transition-transform duration-200 ${
                     isActive
                       ? 'scale-110'
@@ -198,7 +255,11 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
                 />
 
                 {item.label}
+
               </div>
+
+
+              {/* Active Indicator */}
 
               {isActive && (
                 <div
@@ -209,12 +270,17 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
                   }`}
                 />
               )}
+
             </button>
           );
         })}
       </div>
 
-      {/* 3. Integrated Theme Switcher & Footer */}
+
+      {/* ==================================================
+          THEME + FOOTER
+      ================================================== */}
+
       <div
         className={`mt-auto p-4 border-t ${
           isDark
@@ -223,7 +289,8 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
         }`}
       >
 
-        {/* Premium Segmented Theme Toggle */}
+        {/* Theme Switcher */}
+
         <div
           className={`flex items-center p-1 mb-4 rounded-xl border ${
             isDark
@@ -231,6 +298,7 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
               : 'bg-slate-100/80 border-slate-200/60'
           }`}
         >
+
           <button
             onClick={() => setTheme('light')}
             className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
@@ -239,9 +307,16 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
                 : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'
             }`}
           >
-            <Sun size={14} strokeWidth={!isDark ? 2.5 : 2} />
+            <Sun
+              size={14}
+              strokeWidth={
+                !isDark ? 2.5 : 2
+              }
+            />
+
             Light
           </button>
+
 
           <button
             onClick={() => setTheme('dark')}
@@ -251,12 +326,23 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
                 : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
             }`}
           >
-            <Moon size={14} strokeWidth={isDark ? 2.5 : 2} />
+            <Moon
+              size={14}
+              strokeWidth={
+                isDark ? 2.5 : 2
+              }
+            />
+
             Dark
           </button>
+
         </div>
 
-        {/* User Profile Mini-Card */}
+
+        {/* ==================================================
+            USER PROFILE
+        ================================================== */}
+
         <div
           className={`flex items-center gap-3 p-3 mb-3 rounded-2xl ${
             isDark
@@ -264,6 +350,7 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
               : 'bg-slate-50/80'
           }`}
         >
+
           <div
             className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm uppercase ${
               isDark
@@ -271,29 +358,44 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
                 : 'bg-indigo-100 text-indigo-700'
             }`}
           >
-            {((profile as any)?.name || 'U').charAt(0)}
+            {(
+              (profile as any)?.name || 'U'
+            ).charAt(0)}
           </div>
 
+
           <div className="flex-1 min-w-0">
+
             <p
               className={`text-sm font-bold truncate ${
-                isDark ? 'text-white' : 'text-slate-900'
+                isDark
+                  ? 'text-white'
+                  : 'text-slate-900'
               }`}
             >
-              {(profile as any)?.name || 'Resident'}
+              {(profile as any)?.name ||
+                'Resident'}
             </p>
 
             <p
               className={`text-[11px] font-medium truncate ${
-                isDark ? 'text-slate-500' : 'text-slate-400'
+                isDark
+                  ? 'text-slate-500'
+                  : 'text-slate-400'
               }`}
             >
-              {(profile as any)?.email || 'resident@hostel.com'}
+              {(profile as any)?.email ||
+                'resident@hostel.com'}
             </p>
+
           </div>
         </div>
 
-        {/* Clean Logout Button */}
+
+        {/* ==================================================
+            LOGOUT
+        ================================================== */}
+
         <button
           onClick={handleSignOut}
           className={`group flex items-center justify-center gap-2.5 w-full py-3 rounded-xl font-medium transition-all duration-200 text-sm ${
@@ -306,15 +408,20 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
             size={16}
             className="transition-transform group-hover:-translate-x-1"
           />
+
           Sign Out
         </button>
+
       </div>
+
     </div>
   );
 
-  // --------------------------------------------------------
-  // MAIN LAYOUT WRAPPER
-  // --------------------------------------------------------
+
+  // ========================================================
+  // MAIN LAYOUT
+  // ========================================================
+
   return (
     <div
       className={`min-h-screen w-full flex font-sans transition-colors duration-500 ${
@@ -324,7 +431,10 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
       }`}
     >
 
-      {/* MOBILE NAVBAR */}
+      {/* ==================================================
+          MOBILE NAVBAR
+      ================================================== */}
+
       <div
         className={`lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-5 py-3.5 backdrop-blur-2xl border-b transition-colors duration-300 ${
           isDark
@@ -332,7 +442,9 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
             : 'bg-white/80 border-slate-200/60'
         }`}
       >
+
         <div className="flex items-center gap-2.5">
+
           <Users
             size={20}
             className="text-indigo-500"
@@ -341,15 +453,23 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
 
           <h2
             className={`font-bold text-sm tracking-tight ${
-              isDark ? 'text-white' : 'text-slate-900'
+              isDark
+                ? 'text-white'
+                : 'text-slate-900'
             }`}
           >
             Resident Portal
           </h2>
+
         </div>
 
+
         <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={() =>
+            setIsMobileMenuOpen(
+              !isMobileMenuOpen
+            )
+          }
           className={`p-2 rounded-xl transition-colors ${
             isDark
               ? 'text-slate-400 hover:bg-white/5'
@@ -358,20 +478,30 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
         >
           <Menu size={22} />
         </button>
+
       </div>
 
-      {/* MOBILE SIDEBAR */}
+
+      {/* ==================================================
+          MOBILE SIDEBAR
+      ================================================== */}
+
       <AnimatePresence>
+
         {isMobileMenuOpen && (
           <>
+
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={() =>
+                setIsMobileMenuOpen(false)
+              }
             />
+
 
             <motion.aside
               initial={{ x: '-100%' }}
@@ -390,11 +520,17 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
             >
               <SidebarContent />
             </motion.aside>
+
           </>
         )}
+
       </AnimatePresence>
 
-      {/* DESKTOP SIDEBAR */}
+
+      {/* ==================================================
+          DESKTOP SIDEBAR
+      ================================================== */}
+
       <aside
         className={`hidden lg:block w-[280px] min-w-[280px] h-screen sticky top-0 border-r transition-colors duration-300 ${
           isDark
@@ -405,10 +541,15 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
         <SidebarContent />
       </aside>
 
-      {/* MAIN CONTENT AREA */}
+
+      {/* ==================================================
+          MAIN CONTENT
+      ================================================== */}
+
       <main className="flex-1 w-full flex flex-col min-h-screen max-w-full overflow-x-hidden relative">
 
         {/* Ambient Glows */}
+
         {isDark && (
           <>
             <div className="fixed top-[-20%] left-[10%] w-[50%] h-[50%] bg-indigo-900/10 rounded-full blur-[120px] pointer-events-none" />
@@ -417,14 +558,27 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
           </>
         )}
 
+
         {/* Content Wrapper */}
+
         <div className="flex-1 w-full mt-16 lg:mt-0 p-5 sm:p-8 lg:p-10 relative z-10">
+
           <AnimatePresence mode="wait">
+
             <motion.div
               key={location.pathname}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
+              initial={{
+                opacity: 0,
+                y: 8,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: -8,
+              }}
               transition={{
                 duration: 0.25,
                 ease: 'easeOut',
@@ -433,9 +587,13 @@ export default function MemberLayout({ children }: MemberLayoutProps) {
             >
               {children}
             </motion.div>
+
           </AnimatePresence>
+
         </div>
+
       </main>
+
     </div>
   );
 }

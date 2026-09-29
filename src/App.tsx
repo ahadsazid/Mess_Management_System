@@ -9,7 +9,11 @@ import {
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Page Imports
+// ========================================================
+// PAGE IMPORTS
+// ========================================================
+
+// Admin Pages
 import AdminSignup from './pages/admin/AdminSignup';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -22,6 +26,7 @@ import NoticesManagement from './pages/admin/NoticesManagement';
 import ExpensesManagement from './pages/admin/ExpensesManagement';
 import AdminSettings from './pages/admin/AdminSettings';
 
+// Member Pages
 import MemberLogin from './pages/MemberLogin';
 import MemberDashboard from './pages/member/MemberDashboard';
 import MemberProfile from './pages/member/MemberProfile';
@@ -30,6 +35,10 @@ import MemberMealPreferences from './pages/member/MemberMealPreferences';
 import MemberPayments from './pages/member/MemberPayments';
 import MemberNotices from './pages/member/MemberNotices';
 
+// ⭐ NEW: Personalized Meal Recommendation
+import MealRecommendations from './pages/member/MealRecommendations';
+
+// Auth
 import AuthCallback from './pages/AuthCallback';
 
 
@@ -41,6 +50,9 @@ const RootRedirect = () => {
   const { user, role, loading } = useAuth();
   const location = useLocation();
 
+  // ------------------------------------------------------
+  // Loading
+  // ------------------------------------------------------
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -49,12 +61,16 @@ const RootRedirect = () => {
     );
   }
 
-  // Jodi user na thake, login e pathabo
+  // ------------------------------------------------------
+  // No authenticated user
+  // ------------------------------------------------------
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // Jodi user thake ebong pathname root ('/') hoy
+  // ------------------------------------------------------
+  // Root path
+  // ------------------------------------------------------
   if (location.pathname === '/') {
     const lastPage = localStorage.getItem('lastVisitedPage');
 
@@ -67,7 +83,7 @@ const RootRedirect = () => {
       return <Navigate to={lastPage} replace />;
     }
 
-    // Kon last page na thakle role onujayi default dashboard
+    // Default dashboard based on role
     return (
       <Navigate
         to={role === 'admin' ? '/admin/dashboard' : '/dashboard'}
@@ -91,23 +107,30 @@ function AppRoutes() {
       {/* ==================================================
           ROOT ROUTE
       ================================================== */}
-      <Route path="/" element={<RootRedirect />} />
+
+      <Route
+        path="/"
+        element={<RootRedirect />}
+      />
 
 
       {/* ==================================================
           AUTH ROUTES
       ================================================== */}
 
+      {/* Admin Signup */}
       <Route
         path="/admin/signup"
         element={<AdminSignup />}
       />
 
+      {/* Admin Login */}
       <Route
         path="/admin/login"
         element={<AdminLogin />}
       />
 
+      {/* Member Login */}
       <Route
         path="/login"
         element={<MemberLogin />}
@@ -124,7 +147,10 @@ function AppRoutes() {
           ADMIN PROTECTED ROUTES
       ================================================== */}
 
-      {/* Admin Dashboard */}
+      {/* --------------------------------------------------
+          Admin Dashboard
+      -------------------------------------------------- */}
+
       <Route
         path="/admin/dashboard"
         element={
@@ -134,7 +160,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Members */}
+      {/* --------------------------------------------------
+          Members Management
+      -------------------------------------------------- */}
+
       <Route
         path="/admin/members"
         element={
@@ -144,7 +173,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Meals */}
+      {/* --------------------------------------------------
+          Meals Management
+      -------------------------------------------------- */}
+
       <Route
         path="/admin/meals"
         element={
@@ -154,7 +186,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Payments */}
+      {/* --------------------------------------------------
+          Payments Management
+      -------------------------------------------------- */}
+
       <Route
         path="/admin/payments"
         element={
@@ -164,7 +199,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Meal Preferences */}
+      {/* --------------------------------------------------
+          Meal Preferences Management
+      -------------------------------------------------- */}
+
       <Route
         path="/admin/meal-preferences"
         element={
@@ -174,7 +212,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Manager Lottery */}
+      {/* --------------------------------------------------
+          Manager Lottery
+      -------------------------------------------------- */}
+
       <Route
         path="/admin/manager-lottery"
         element={
@@ -184,7 +225,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Notices */}
+      {/* --------------------------------------------------
+          Notices Management
+      -------------------------------------------------- */}
+
       <Route
         path="/admin/notices"
         element={
@@ -194,7 +238,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Expenses */}
+      {/* --------------------------------------------------
+          Expenses Management
+      -------------------------------------------------- */}
+
       <Route
         path="/admin/expenses"
         element={
@@ -204,7 +251,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Settings */}
+      {/* --------------------------------------------------
+          Admin Settings
+      -------------------------------------------------- */}
+
       <Route
         path="/admin/settings"
         element={
@@ -219,7 +269,10 @@ function AppRoutes() {
           MEMBER PROTECTED ROUTES
       ================================================== */}
 
-      {/* Member Dashboard */}
+      {/* --------------------------------------------------
+          Member Dashboard
+      -------------------------------------------------- */}
+
       <Route
         path="/dashboard"
         element={
@@ -229,7 +282,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Member Profile */}
+      {/* --------------------------------------------------
+          Member Profile
+      -------------------------------------------------- */}
+
       <Route
         path="/profile"
         element={
@@ -239,7 +295,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Member Meals */}
+      {/* --------------------------------------------------
+          Member Meals
+      -------------------------------------------------- */}
+
       <Route
         path="/meals"
         element={
@@ -249,7 +308,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Member Meal Preferences */}
+      {/* --------------------------------------------------
+          Member Meal Preferences
+      -------------------------------------------------- */}
+
       <Route
         path="/meal-preferences"
         element={
@@ -259,7 +321,30 @@ function AppRoutes() {
         }
       />
 
-      {/* Member Payments */}
+      {/* --------------------------------------------------
+          ⭐ NEW: Personalized Meal Recommendations
+          --------------------------------------------------
+          
+          URL:
+          /meal-recommendations
+
+          This page is only accessible to authenticated
+          members.
+      -------------------------------------------------- */}
+
+      <Route
+        path="/meal-recommendations"
+        element={
+          <ProtectedRoute requiredRole="member">
+            <MealRecommendations />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* --------------------------------------------------
+          Member Payments
+      -------------------------------------------------- */}
+
       <Route
         path="/payments"
         element={
@@ -269,7 +354,10 @@ function AppRoutes() {
         }
       />
 
-      {/* Member Notices */}
+      {/* --------------------------------------------------
+          Member Notices
+      -------------------------------------------------- */}
+
       <Route
         path="/notices"
         element={
@@ -309,3 +397,4 @@ function App() {
 }
 
 export default App;
+
